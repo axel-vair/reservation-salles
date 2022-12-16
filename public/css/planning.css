@@ -1,0 +1,35 @@
+#head {
+    font-weight: bold;
+    background: rgb(157, 136, 231);
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+table {
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+}
+
+.container_planning {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.indisponible {
+    background: #d04793;
+}
+
+.disponible {
+    background: darkseagreen;
+}
+
+.td_vide{
+    border: white ;
+}
