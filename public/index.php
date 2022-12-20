@@ -22,11 +22,11 @@ if(!empty($_SESSION)){
 <body>
 <h2>Retrouvez-moi sur les réseaux sociaux :  </h2>
 <div class="logo">
-    <a id="index_git" href="https://github.com/axel-vair"><img class="git" src="github.png"></a>
-    <a id="index_link" href="https://linkedin.com/axel-vair"><img class="link" src="linkedin.png"></a>
+    <a id="index_git" href="https://github.com/axel-vair"><img class="git" src="../images/github.png"></a>
+    <a id="index_link" href="https://linkedin.com/axel-vair"><img class="link" src="../images/linkedin.png"></a>
 </div>
 <div class="emoji">
-    <img class="emojipic" src="axelemoji.jpg">
+    <img class="emojipic" src="../images/axelemoji.jpg">
 </div>
 
 <?php include 'footer.php' ?>

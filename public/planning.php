@@ -13,19 +13,17 @@ $period = new DatePeriod($start, $interval, $end);
 
 
 foreach ($period as $date){
-    $arrayDate[] = [$date->format('d-m-Y')];
+    $arrayDate[] = $date->format('d-m-Y');
 }
 
-$sql = $conn->prepare("SELECT * 
-        FROM utilisateurs
-        INNER JOIN reservations
+
+$sql = $conn->prepare("SELECT *, reservations.id AS id
+        FROM reservations
+        INNER JOIN utilisateurs
         ON utilisateurs.id = reservations.id_utilisateur");
 
 $sql->execute();
 $results = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-print_r($results);
-
 
 ?>
 
@@ -46,28 +44,44 @@ print_r($results);
 <div class="container_planning">
     <table>
 
-    <?php
 
-    ?>
     <?php for($i=7; $i < 20; $i++) : ?> <!-- tant que $i est inférieur à 20, on boucle. on met une balise <tr> -->
                 <tr>
+
                     <?php if($i == 7) : ?>
                     <td class="td_vide"><?= " " ?></td>
                     <?php else : ?>
                         <td> <?= $i . "h"?>
                     <?php endif;?>
             <?php for($j = 0; $j < 7; $j++) : ?> <!-- si $j est inférieur à 7 on incrémente -->
+
                 <?php if($i == 7) : ?> <!-- si $i égal à 7 alors on arrive en fin de première ligne et on veut afficher le jour la date du jour -->
-                <td id="head"><?= displayDays($j) . ' ' . $arrayDate[$j][0]?></td>
+                    <td id="head"><?= displayDays($j) . ' ' . $arrayDate[$j]?></td>
                 <?php else : ?> <!-- sinon on lance une nouvelle condition -->
-                    <?php if($j > 4) : ?> <!-- si j est supérieur à 4 donc si on dépasse vendredi, alors on affiche l'indisponibilité -->
-                        <td class="indisponible"><?= "indisponible" ?></td>
-                    <?php else : ?> <!-- sinon c'est disponible et on affiche l'heure et le jour -->
-                        <td class="disponible"><?= $i . ":00" . " " . displayDays($j) ?></td>
-                    <?php endif; ?>
+                    <?php $dateComparaison = date('Y-m-d H:i:s', strtotime('this week monday' . $i . 'hours' . $j .'days')) ?>
+                    <?php foreach($results as $event) : ?>
+                        <?php $valid = false; ?>
+                        <?php if($dateComparaison >= $event['debut'] && $dateComparaison <= $event['fin']) :
+                            ?>
+                            <?php $valid = true; $idReservation = $event['id']; break ?>
+                        <?php endif;?>
+                    <?php endforeach ;?>
+                    <?php if($valid) : ?>
+                        <?= "<td class='indisponible'><a href='reservation.php?id=$idReservation'>Réservé <br>{$event['titre']} <br> {$event['login']}</a></td>" ?>
+                    <?php elseif($j > 4) : ?>
+                        <?= "<td class='indisponible'>Fermé</td>" ?>
+
+                    <?php else : ?>
+                        <?= "<td class='disponible'><a href='reservation-form.php'>Créneau disponible</a> </td>" ?>
+                    <?php endif ; ?>
+
+
                 <?php endif; ?>
+
             <?php endfor; ?>
+
                 </tr>
+
     <?php endfor; ?>
 
     </table>

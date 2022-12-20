@@ -70,6 +70,7 @@ if(isset($_POST['submit'])){
     $description = $_POST['description'];
     $id_utilisateur = $_SESSION['id'];
 
+    
 
     $sql = "INSERT INTO reservations(titre, description, debut, fin, id_utilisateur) VALUES(:titre,:description, :debut, :fin, :id_utilisateur)";
     $sql_insert = $conn->prepare($sql);

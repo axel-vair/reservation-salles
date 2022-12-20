@@ -15,7 +15,7 @@
 <body>
 <footer>
     <a href="https://github.com/axel-vair/module-connexion">
-        <img class="logo_footer" alt="logo github" src="github.png">
+        <img class="logo_footer" alt="logo github" src="../images/github.png">
     </a>
 </footer>
 </body>
