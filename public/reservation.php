@@ -2,8 +2,8 @@
 require_once 'header.php';
 require_once 'connect.php';
 
+if(!empty($_SESSION['login'])){
     $idEvent = $_GET['id'];
-
     $sql = "SELECT * 
             FROM reservations 
             INNER JOIN utilisateurs
@@ -19,9 +19,13 @@ require_once 'connect.php';
     $fin = $results['fin'];
     $description = $results['description'];
 
-$jour = date('d/m/Y', strtotime($debut));
-$hdebut = date('H:i', strtotime($debut));
-$hfin = date('H:i', strtotime($fin));
+    $jour = date('d/m/Y', strtotime($debut));
+    $hdebut = date('H:i', strtotime($debut));
+    $hfin = date('H:i', strtotime($fin));
+}else{
+    echo "<p class='error'>Connectez-vous pour lire les informations</p>";
+    die();
+}
 
 
 ?>

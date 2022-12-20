@@ -35,3 +35,18 @@ button {
     width: 100px;
     text-transform: uppercase;
 }
+
+h3 {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.valid {
+    color: green;
+    text-align: center;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
