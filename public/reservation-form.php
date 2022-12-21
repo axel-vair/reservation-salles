@@ -4,11 +4,12 @@ require_once 'connect.php';
 
 $currentDate = date('Y-m-d');
 
+
+
 if(!empty($_SESSION['login'])) {
     echo "<h3>Bonjour {$_SESSION['login']} </h3>";
-
     if (isset($_POST['submit']) && !empty($_POST['title']) && !empty($_POST['description'])){
-
+        $valid = true;
         $id_user = $_SESSION['id'];
         $titre = $_POST['title'];
         $debut = $_POST['debut'];
@@ -17,22 +18,31 @@ if(!empty($_SESSION['login'])) {
         $dateFin = $_POST['date'] . " " . "0" . $fin . ":" . "00" . ":" . "00";
         $description = $_POST['description'];
         $id_utilisateur = $_SESSION['id'];
+        $dateCheck = $_POST['date'];
+        $dateCheckWeek = date('w', strtotime($dateCheck));
 
+        if($dateCheckWeek == "0" || $dateCheckWeek == "6") {
+            $valid = false;
 
-        $sql = "INSERT INTO reservations(titre, description, debut, fin, id_utilisateur) VALUES(:titre,:description, :debut, :fin, :id_utilisateur)";
-        $sql_insert = $conn->prepare($sql);
-        $sql_insert->bindParam(':titre', $titre);
-        $sql_insert->bindParam(':description', $description);
-        $sql_insert->bindParam(':debut', $dateDebut);
-        $sql_insert->bindParam(':fin', $dateFin);
-        $sql_insert->bindParam(':id_utilisateur', $id_utilisateur);
-        $sql_insert->execute();
+        }
+        if($valid) {
+                $sql = "INSERT INTO reservations(titre, description, debut, fin, id_utilisateur) VALUES(:titre,:description, :debut, :fin, :id_utilisateur)";
+                $sql_insert = $conn->prepare($sql);
+                $sql_insert->bindParam(':titre', $titre);
+                $sql_insert->bindParam(':description', $description);
+                $sql_insert->bindParam(':debut', $dateDebut);
+                $sql_insert->bindParam(':fin', $dateFin);
+                $sql_insert->bindParam(':id_utilisateur', $id_utilisateur);
+                $sql_insert->execute();
 
-        echo "<p class='valid'>Réservation réussie </p>";
-    }
+                echo "<p class='valid'>Réservation réussie </p>";
+            }else{
+                echo "<p class='error'>Nous sommes fermés le week-end</p>";
+            }
+        }
     }else{
-    echo "<p class='error'>Connectez-vous pour réserver un créneau</p>";
-}
+        echo "<p class='error'>Connectez-vous pour réserver un créneau</p>";
+    }
 
 
 
@@ -85,4 +95,3 @@ if(!empty($_SESSION['login'])) {
 </section>
 </body>
 </html>
-
